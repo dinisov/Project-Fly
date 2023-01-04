@@ -21,3 +21,7 @@ This script initiates initiate the projector, i.e. it makes it the default scree
 on_off_socket.py
 
 This script starts a socket interface that listens for a serial signal, usually from Matlab in this setup, that turns on and off the projector. The lag in turning on and off the projector has been measured empirically with an oscilloscope and seems to be a maximum of 10 ms for ON and maximum of 15 ms for OFF.
+
+## RPi config file
+
+The config.txt file has many tweaks allowing the RPi and the projector to work together
