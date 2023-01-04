@@ -1,0 +1,11 @@
+To compile:
+
+./arduino-cli compile -b arduino:avr:uno ../SE_6Hz/SE_6Hz.ino
+
+To upload;
+
+./arduino-cli upload -p /dev/ttyACM0 -b arduino:avr:uno ../SE_6Hz/SE_6Hz.ino
+
+This is necessary before anything works:
+
+./arduino-cli core install arduino:avr
