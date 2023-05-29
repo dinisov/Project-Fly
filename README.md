@@ -24,4 +24,4 @@ This script starts a socket interface that listens for a serial signal, usually 
 
 ## RPi config file
 
-The config.txt file has many tweaks allowing the RPi and the projector to work together
+The config.txt file has many tweaks allowing the RPi and the projector to work together. It lives inside the /boot directory of the RPi.

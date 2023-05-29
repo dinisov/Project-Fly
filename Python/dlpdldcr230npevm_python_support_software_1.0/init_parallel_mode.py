@@ -113,7 +113,7 @@ def main():
         WriteKeystoneProjectionPitchAngle(40)
 
         # turn off red and green LEDs
-        Summary = WriteRgbLedEnable(1,1,1)
+        Summary = WriteRgbLedEnable(0,0,0)
 
         # ##### ##### Command call(s) end here ##### #####
         i2c.terminate()

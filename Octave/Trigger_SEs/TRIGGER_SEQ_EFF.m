@@ -29,10 +29,10 @@ frequency = 6;
 %number of blocks (usually 4500 for SEs)
 %must be even number
 %WARNING: this could make for long experiments
-numberOfBlocks = 100;
+numberOfBlocks = 1000;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    
+
 switch frequency
 
     case 4
@@ -143,7 +143,6 @@ try
     
     %% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
     KbName('UnifyKeyNames');
      screenNumber=max(Screen('Screens'));
 %    screenNumber=3;
@@ -183,6 +182,13 @@ try
     myport = IOPort('OpenSerialPort', portSpec, portSettings);
     IOPort('ConfigureSerialPort', myport, asyncSetup);
 
+    WaitSecs(2);%necessary so Arduino has opened serial port before we send an 'S'
+
+    %start Arduino
+    IOPort('Write',myport,'S');
+
+%     disp('SERIAL PORT OPEN!');
+
     count = 0;
 
     [vbl,~] = Screen('Flip', win); %clear the stimulus
@@ -192,12 +198,12 @@ try
 
         % wait for two bytes (Arduino sends an S or E followed by \n)
         [pktdata, treceived] = IOPort('Read', myport, 1, 1);
-        
-        write(t,'S');
 
 %         WaitSecs(0.5);
         
         if char(pktdata(1)) == 'S'
+
+            write(t,'S');
 
             for i = 1:blockLength
                 %display the stimulus
@@ -208,16 +214,18 @@ try
                 Screen('FillRect', win, backgroundColour);
                 [vbl,~] = Screen('Flip', win,vbl+(nFlipsSD-.5)*ifi,[],0);
             end 
+
+            write(t,'E');
 %     
             count = count + 1;
+
+            disp(count);
 % 
         end
 
-         write(t,'E');
-
     end
 
-%     write(t,'S');
+save -mat7-binary SE_fly2_exp2_5May2023.mat;
     
     KloseIt
 

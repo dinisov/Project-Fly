@@ -126,7 +126,7 @@ def main():
                         # print('turn off!')
                         WriteRgbLedEnable(0,0,0)
                     if not data:
-                        WriteRgbLedEnable(1,1,1)
+                        WriteRgbLedEnable(0,0,0)
                         break
                     # print(data)
                     # conn.sendall(data)
