@@ -1,14 +1,14 @@
 from gpiozero import PWMLED, OutputDevice
 from time import sleep
 import numpy as np
+import serial
+
+# establish serial link (Shutter_controller.ino Arduino script should be uploaded)
+ser = serial.Serial('/dev/ttyACM0', 9600, timeout=1)
 
 ## pins for the two separate LEDs
 led1 = PWMLED(17)
 led2 = PWMLED(27)
-
-# pins to start the 2P and close/open the shutter
-shutterPin = OutputDevice(5)
-framePin = OutputDevice(13)
 
 #LED intensity by PWM
 pwm1 = .1
@@ -16,10 +16,10 @@ pwm2 = .1
 
 #stimulus on and off times (in seconds)
 #frequency is 1/(stimOn+stimOff)
-stimOn = .1
-stimOff = .7
+stimOn = .020
+stimOff = .140
 
-numberOfBlocks = 2
+numberOfBlocks = 10
 blockLength = 5
 
 recordingPeriod = 2
@@ -31,16 +31,20 @@ randomSequence = np.array([0] * int (sequenceLength/2) + [1] * int (sequenceLeng
 
 np.random.shuffle(randomSequence)
 
+np.savetxt('fly1_exp1_9Jun23.csv',randomSequence,delimiter=",")
+
 trial = 0
 
-# probably should pulse the shutter pin
+sleep(2)#give the serial link some time to startup
+
+# ser.write('S'.encode())# close shutter
 
 for i in range(numberOfBlocks):
 
-	# display part
-	framePin.off()#stop recording
-	shutterPin.off()#close shutter
+	ser.write('S'.encode())# close shutter
+	sleep(0.02)#wait 20 ms for shutter to fully close (protects PMT)
 
+	# display part
 	for s in range(blockLength):
 
 		led1.value = 0
@@ -59,11 +63,9 @@ for i in range(numberOfBlocks):
 	led2.value = 0
 
 	#recording part
-
-	# open shutter and start recording
-	shutterPin.on()#open shutter
-	sleep(0.020)#enough time for shutter to be fully open
-	framePin.on()#start recording
-
-
+	print(i)
+	ser.write('S'.encode())# open shutter
+	sleep(0.002)#wait 20 ms for shutter to fully open
+	ser.write('F'.encode())#start recording (assumes frame pin in Arduino is LOW to start with
 	sleep(recordingPeriod)
+	ser.write('F'.encode())#end recording
