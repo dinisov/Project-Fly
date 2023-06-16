@@ -19,7 +19,7 @@ pwm2 = .1
 stimOn = .020
 stimOff = .140
 
-numberOfBlocks = 10
+numberOfBlocks = 1000
 blockLength = 5
 
 recordingPeriod = 2
@@ -31,7 +31,7 @@ randomSequence = np.array([0] * int (sequenceLength/2) + [1] * int (sequenceLeng
 
 np.random.shuffle(randomSequence)
 
-np.savetxt('fly1_exp1_9Jun23.csv',randomSequence,delimiter=",")
+np.savetxt('fly2_exp3_15Jun23.csv',randomSequence,delimiter=",")
 
 trial = 0
 
@@ -42,7 +42,7 @@ sleep(2)#give the serial link some time to startup
 for i in range(numberOfBlocks):
 
 	ser.write('S'.encode())# close shutter
-	sleep(0.02)#wait 20 ms for shutter to fully close (protects PMT)
+	sleep(0.05)#wait 50 ms for shutter to fully close (protects PMT)
 
 	# display part
 	for s in range(blockLength):

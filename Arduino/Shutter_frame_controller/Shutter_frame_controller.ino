@@ -13,11 +13,13 @@ void setup()
   pinMode(ShutterPin, OUTPUT);
   pinMode(FramePin, OUTPUT);
 
-  //start both shutter and frame pins LOW
-  digitalWrite(ShutterPin, HIGH);
-  delay(100);
-  digitalWrite(ShutterPin,LOW);
+  //start frame pin LOW
   digitalWrite(FramePin, LOW);
+
+  //start shutter pin HIGH
+  digitalWrite(ShutterPin, HIGH);
+  // delay(100);
+  // digitalWrite(ShutterPin,LOW);
 
 }
 
